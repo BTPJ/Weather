@@ -1,15 +1,16 @@
-package db;
+package com.text.weather.db;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import bean.City;
-import bean.County;
-import bean.Province;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.text.weather.bean.City;
+import com.text.weather.bean.County;
+import com.text.weather.bean.Province;
 
 /**
  * 数据库帮助类
@@ -61,7 +62,7 @@ public class WeatherDao {
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
 			values.put("province_code", province.getProvinceCode());
-			db.insert("province", null, values);
+			db.insert("Province", null, values);
 		}
 	}
 
@@ -72,7 +73,8 @@ public class WeatherDao {
 	 */
 	public List<Province> loadProvinces() {
 		List<Province> provincelList = new ArrayList<Province>();
-		Cursor cursor = db.query("provice", null, null, null, null, null, null);
+		Cursor cursor = db
+				.query("Province", null, null, null, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {
 				Province province = new Province();
@@ -99,7 +101,7 @@ public class WeatherDao {
 			values.put("city_name", city.getCityName());
 			values.put("city_code", city.getCityCode());
 			values.put("province_id", city.getProvinceId());
-			db.insert("city", null, values);
+			db.insert("City", null, values);
 		}
 	}
 
@@ -111,7 +113,7 @@ public class WeatherDao {
 	 */
 	public List<City> loadCities(int provinceId) {
 		List<City> cityList = new ArrayList<City>();
-		Cursor cursor = db.query("city", null, "provinceId = ?",
+		Cursor cursor = db.query("City", null, "province_id = ?",
 				new String[] { String.valueOf(provinceId) }, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {
@@ -136,12 +138,11 @@ public class WeatherDao {
 	 */
 	public void saveCounty(County county) {
 		if (county != null) {
-			county = new County();
 			ContentValues values = new ContentValues();
 			values.put("county_name", county.getCountyName());
 			values.put("county_code", county.getCountyCode());
 			values.put("city_id", county.getCityId());
-			db.insert("county", null, values);
+			db.insert("County", null, values);
 		}
 	}
 
@@ -153,7 +154,7 @@ public class WeatherDao {
 	 */
 	public List<County> loadCounties(int cityId) {
 		List<County> countyList = new ArrayList<County>();
-		Cursor cursor = db.query("county", null, "cityId = ?",
+		Cursor cursor = db.query("County", null, "city_id = ?",
 				new String[] { String.valueOf(cityId) }, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {

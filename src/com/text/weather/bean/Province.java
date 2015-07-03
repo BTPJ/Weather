@@ -1,4 +1,4 @@
-package bean;
+package com.text.weather.bean;
 
 /**
  * 省实体类

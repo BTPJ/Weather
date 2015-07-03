@@ -1,4 +1,4 @@
-package bean;
+package com.text.weather.bean;
 
 /**
  * 城市的实体类

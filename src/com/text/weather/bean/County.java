@@ -1,4 +1,4 @@
-package bean;
+package com.text.weather.bean;
 
 /**
  * 县（区）的实体类

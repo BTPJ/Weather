@@ -7,11 +7,22 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="22" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        <activity android:name="com.text.weather.activity.ChooseAreaActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.text.weather.activity.WeatherActivity" >
+        </activity>
     </application>
 
 </manifest>
