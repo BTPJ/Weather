@@ -15,7 +15,9 @@ import com.text.weather.util.HttpUtil.HttpCallbackListener;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +48,13 @@ public class ChooseAreaActivity extends Activity implements OnItemClickListener 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SharedPreferences mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (mSharedPreferences.getBoolean("city_selected", false)
+				&& !(getIntent().getBooleanExtra("switch_area", false))) {
+			startActivity(new Intent(this, WeatherActivity.class));
+			finish();
+		}
 		setContentView(R.layout.activity_choose_area);
 		initView();
 		mWeatherDao = WeatherDao.getInstance(this);
@@ -83,6 +92,7 @@ public class ChooseAreaActivity extends Activity implements OnItemClickListener 
 			String countyCode = countyList.get(position).getCountyCode();
 			intent.putExtra("county_code", countyCode);
 			startActivity(intent);
+			finish();
 			break;
 		default:
 			break;

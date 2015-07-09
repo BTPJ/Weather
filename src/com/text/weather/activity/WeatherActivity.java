@@ -6,17 +6,27 @@ import com.text.weather.util.HttpUtil.HttpCallbackListener;
 import com.text.weather.util.Tools;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class WeatherActivity extends Activity {
+/**
+ * 显示天气信息的Activity
+ * 
+ * @author LTP
+ *
+ */
+public class WeatherActivity extends Activity implements OnClickListener {
 	private TextView textView_show_weather_title, textView_publish_time,
 			textView_time, textView_weather_details, textView_temperature;
+	private Button button_switch_area, button_refresh_weather;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +41,8 @@ public class WeatherActivity extends Activity {
 			textView_weather_details.setVisibility(View.INVISIBLE);
 			textView_temperature.setVisibility(View.INVISIBLE);
 			queryWeatherCode(countyCode);
+		}else {
+			showWeather();
 		}
 	}
 
@@ -41,6 +53,10 @@ public class WeatherActivity extends Activity {
 		textView_time = (TextView) findViewById(R.id.textView_time);
 		textView_weather_details = (TextView) findViewById(R.id.textView_weather_details);
 		textView_temperature = (TextView) findViewById(R.id.textView_temperature);
+		button_switch_area = (Button) findViewById(R.id.button_switch_area);
+		button_switch_area.setOnClickListener(this);
+		button_refresh_weather = (Button) findViewById(R.id.button_refresh_weather);
+		button_refresh_weather.setOnClickListener(this);
 	}
 
 	/**
@@ -140,7 +156,32 @@ public class WeatherActivity extends Activity {
 		textView_time.setVisibility(View.VISIBLE);
 		textView_weather_details.setVisibility(View.VISIBLE);
 		textView_temperature.setVisibility(View.VISIBLE);
+	}
 
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.button_switch_area:
+			Intent intent=new Intent(this, ChooseAreaActivity.class);
+			intent.putExtra("switch_area", true);
+			startActivity(intent);
+			finish();
+			break;
+		case R.id.button_refresh_weather:
+			textView_publish_time.setText("同步中......");
+			SharedPreferences mSharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(this);
+			String weatherCode = mSharedPreferences.getString("weather_code",
+					"");
+			if (!TextUtils.isEmpty(weatherCode)) {
+				queryWeatherInfo(weatherCode);
+			}
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }
